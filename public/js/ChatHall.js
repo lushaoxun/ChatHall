@@ -49,9 +49,51 @@ app.controller("ChatCtrl",['$scope','socket','randomRole',function($scope,socket
     $scope.login=function () {  //log into the ChatHall  //todo 加入动漫角色，加入对应的关系
         socket.emit('addUser',{nickname:$scope.nickname,role:$scope.role})
     }
-    
 
-    from:$scope.nickname,to:$scope.nickname
+
+
+    socket.on('userAddingResult',function (data) {
+        if(data.result){
+            $scope.islogined=true;
+        }
+        else{
+            $scope.islogined=false;
+        }
+    })
+     //initialize  the online  list when receive all users message
+    socket.on('allUser',function (data) {
+
+    });
+    //display the welcome form and refresh the online list when receive the new user message
+    socket.on('userAdded',function (data) {
+
+    });
+    //refresh the online list  when receive the new user exit message
+    socket.on('userRemoved',function(data){
+
+    });
+
+    //add to chat record when receive the new message
+    socket.on('messageAdded',function (data) {
+
+    });
+
+
+
+
 }]); //Inline injection
-app.direction('message',['$timeout',function($timeout){}])
+app.direction('message',['$timeout',function($timeout){
+    return {
+        restrict:'E',
+        templateUrl:'message.html'
+        scope:{
+            info:"=",
+            self:"=",
+            scrolltothis:"&"
+        },
+        link:function (scope,elem,attrs) {
+            $timeout(scope.scrolltothis);
+        }
+    }
+}])
 app.direction('user',['$timeout',function($timeout){}])
