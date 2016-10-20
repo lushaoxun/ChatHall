@@ -56,7 +56,7 @@ app.factory('userService',function ($rootScope) {
     }
 
 })
-app.controller("ChatCtrl",['$scope','socket','randomRole',function($scope,socket,randomRole){
+app.controller("chatCtrl",['$scope','socket','randomRole',function($scope,socket,randomRole){
     var messageWrapper=$('.message-wrapper');
     $scope.islogined=false;
     $scope.receiver="";//Group chat by default
@@ -76,7 +76,7 @@ app.controller("ChatCtrl",['$scope','socket','randomRole',function($scope,socket
 
     $scope.postMessage = function () {
         $scope.words = "";
-        var msg={text:$scope.words,type:"normal",color:$scope.color,from:$scope.nickname,to:$scope.receiver};
+        var msg={text:$scope.words,type:"normal",role:$scope.role,from:$scope.nickname,to:$scope.receiver};
         var rec=$scope.receiver;
         if(rec){   //personal message
             if(!$scope.privateMessage[rec]){
@@ -183,7 +183,7 @@ app.directive('message', ['$timeout',function($timeout) {
                 scope.time=new Date();
                 $timeout(scope.scrolltothis);
                 $timeout(function(){
-                    elem.find('.avatar').css('background',scope.info.color);
+                    elem.find('.avatar').css('background',scope.info.role);
                 });
         }
     };
@@ -198,9 +198,9 @@ app.directive('user',['$timeout',function($timeout){
                 iscurrentreceiver:"=",
                 setreceiver:"&"
             },
-        link:function (scope,elem,attrs,ChatCtrl) {
+        link:function (scope,elem,attrs,chatCtrl) {
             $timeout(function(){
-                elem.find('avatar').css('background',scope.info.color)
+                elem.find('avatar').css('background',scope.info.role)
             })
         }
     }
