@@ -5,12 +5,16 @@ var io = require('socket.io')(http);
 
 app.use(express.static(__dirname + '/public'));
 
+// app.get('/', function (req, res) {
+//     res.sendfile('index.html');
+// });
+
 app.get('/', function (req, res) {
     res.sendfile('index.html');
 });
-
 var connectedSockets={};
 var allUsers=[{nickname:"",color:"#000"}];//初始值即包含"群聊",用""表示nickname
+//var allUsers=[{nickname:"",role:"#000"}];//初始值即包含"群聊",用""表示nickname
 io.on('connection',function(socket){
     socket.on('addUser',function(data){ //有新用户进入聊天室
         if(connectedSockets[data.nickname]){//昵称已被占用
